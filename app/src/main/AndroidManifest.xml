@@ -12,7 +12,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Proyecto_Alarma_PM">
         <activity
-            android:name=".MainActivity"
+            android:name=".AboutUs"
+            android:exported="false" />
+        <activity
+            android:name=".AddPill"
+            android:exported="false" />
+        <activity
+            android:name=".SplashScreen"
+            android:exported="false" />
+        <activity
+            android:name=".PillList"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
