@@ -49,4 +49,14 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-}
+
+        //It allows you to connect camera x to the phone's camera better than camera 2.
+        implementation("androidx.camera:camera-camera2:1.3.0")
+        //It allows the camera to know when your app is open, paused, or closed. It prevents the camera from staying on.
+        implementation("androidx.camera:camera-lifecycle:1.3.0")
+        //It gives you access to the PreviewView. It's the visual component you'll put into the XML so the user can see what the camera is pointing at in real time.
+        implementation("androidx.camera:camera-view:1.3.0")
+        // ML Kit for text recognition
+        //It uses Google´s libraries and allows to convert the image to a String
+        implementation("com.google.mlkit:text-recognition:16.0.0")
+    }
