@@ -49,7 +49,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-    dependencies {
+
         //It allows you to connect camera x to the phone's camera better than camera 2.
         implementation("androidx.camera:camera-camera2:1.3.0")
         //It allows the camera to know when your app is open, paused, or closed. It prevents the camera from staying on.
@@ -60,4 +60,3 @@ dependencies {
         //It uses Google´s libraries and allows to convert the image to a String
         implementation("com.google.mlkit:text-recognition:16.0.0")
     }
-}
