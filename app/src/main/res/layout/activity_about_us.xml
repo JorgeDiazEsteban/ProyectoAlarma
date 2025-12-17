@@ -7,4 +7,44 @@
     android:layout_height="match_parent"
     tools:context=".AboutUs">
 
+    <TextView
+        android:id="@+id/About"
+        android:layout_width="342dp"
+        android:layout_height="110dp"
+        android:text="@string/About"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="221dp" />
+
+    <TextView
+        android:id="@+id/Objective"
+        android:layout_width="330dp"
+        android:layout_height="118dp"
+        android:text="@string/Objective"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="388dp" />
+
+    <TextView
+        android:id="@+id/Contact"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Contact"
+        android:textSize="10sp"
+        tools:layout_editor_absoluteX="16dp"
+        tools:layout_editor_absoluteY="690dp" />
+
+    <Button
+        android:id="@+id/MainButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/ToTheMain"
+        tools:layout_editor_absoluteX="18dp"
+        tools:layout_editor_absoluteY="592dp" />
+
+    <Button
+        android:id="@+id/CloseButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Close"
+        tools:layout_editor_absoluteX="270dp"
+        tools:layout_editor_absoluteY="591dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
