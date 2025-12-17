@@ -20,8 +20,17 @@
         <meta-data
         android:name="com.google.mlkit.vision.DEPENDENCIES"
         android:value="ocr" />
-    <activity
-            android:name=".MainActivity"
+        <activity
+            android:name=".AboutUs"
+            android:exported="false" />
+        <activity
+            android:name=".AddPill"
+            android:exported="false" />
+        <activity
+            android:name=".SplashScreen"
+            android:exported="false" />
+        <activity
+            android:name=".PillList"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
