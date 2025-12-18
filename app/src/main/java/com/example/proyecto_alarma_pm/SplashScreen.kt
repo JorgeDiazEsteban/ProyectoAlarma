@@ -19,7 +19,7 @@ class SplashScreen : AppCompatActivity() {
             val intent = Intent(this, PillList::class.java)
             startActivity(intent)
             finish()
-            },5000)
+            },3000)
 
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
