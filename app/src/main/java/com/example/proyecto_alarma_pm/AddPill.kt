@@ -3,7 +3,6 @@ package com.example.proyecto_alarma_pm
 import android.Manifest
 import android.app.Activity
 import androidx.core.content.ContextCompat
-
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -22,10 +21,8 @@ class AddPill : AppCompatActivity() {
     private lateinit var binding: ActivityAddPillBinding
     private var scannedText: String = ""
     private val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
-    private var NameTaked: String = " "
     private var HoursList = ArrayList<String>()
 
-    // 1. Los lanzadores (Launchers) DEBEN estar aquí, a nivel de clase
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
@@ -52,27 +49,50 @@ class AddPill : AppCompatActivity() {
         binding = ActivityAddPillBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Botón de guardar
-        binding.SaveButton.setOnClickListener {
-            val new = Pill(
-                binding.Name.text.toString(),
-                binding.NumAlarms.text.toString().toInt(),
-                HoursList,
-                binding.Duration.text.toString()
-            )
-            val intent = Intent()
-            intent.putExtra("New_Pill", new)
-            setResult(RESULT_OK, intent)
-            finish()
+        // Botón Cámara (Cambiado para que abra la cámara en lugar de abrir PillList otra vez)
+        binding.OpenCamera.setOnClickListener {
+            val intent = Intent(this, PillList::class.java)
+            startActivity(intent)
         }
 
-        // Botón de escanear (referencia correcta al ID de tu XML)
+        // Botón de guardar
+        binding.SaveButton.setOnClickListener {
+            val name = binding.Name.text.toString()
+            val numAlarmsStr = binding.NumAlarms.text.toString()
+            val duration = binding.Duration.text.toString()
+
+            if (name.isBlank() || numAlarmsStr.isBlank() || duration.isBlank()) {
+                Toast.makeText(this, "Por favor, rellena todos los campos", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val numAlarms = numAlarmsStr.toIntOrNull() ?: 0
+            
+            val newPill = Pill(
+                name,
+                numAlarms,
+                HoursList,
+                duration
+            )
+
+            val intent = Intent()
+            intent.putExtra("New_Pill", newPill)
+            setResult(RESULT_OK, intent)
+            
+            // Limpiamos los campos por si acaso, aunque al hacer finish() ya no se verán
+            binding.Name.text.clear()
+            binding.NumAlarms.text.clear()
+            binding.Duration.text.clear()
+            
+            Toast.makeText(this, "Pastilla guardada", Toast.LENGTH_SHORT).show()
+            
+        }
+
+        // Botón de escanear (referencia al ID del XML)
         binding.btnScan.setOnClickListener {
             checkCameraPermission()
         }
     }
-
-    // --- FUNCIONES MOVIDAS FUERA DE ONCREATE ---
 
     private fun checkCameraPermission() {
         when {
@@ -97,15 +117,10 @@ class AddPill : AppCompatActivity() {
         recognizer.process(image)
             .addOnSuccessListener { visionText ->
                 if (visionText.text.isNotBlank()) {
-
-                    // Asegúrate de que este ID existe en tu activity_add_pill.xml
-                    binding.tvResult.text = visionText.text
-                    // 1. Guardamos el resultado en nuestra variable
                     scannedText = visionText.text
-
-                    // 2. Lo mostramos en pantalla
                     binding.tvResult.text = scannedText
-
+                    // Ponemos el texto detectado en el campo de Nombre automáticamente
+                    binding.Name.setText(scannedText)
                 } else {
                     binding.tvResult.text = "No se detectó texto."
                 }
