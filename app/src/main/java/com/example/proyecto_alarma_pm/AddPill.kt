@@ -20,6 +20,7 @@ import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 
 class AddPill : AppCompatActivity() {
     private lateinit var binding: ActivityAddPillBinding
+    private var scannedText: String = ""
     private val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
     private var NameTaked: String = " "
     private var HoursList = ArrayList<String>()
@@ -96,8 +97,15 @@ class AddPill : AppCompatActivity() {
         recognizer.process(image)
             .addOnSuccessListener { visionText ->
                 if (visionText.text.isNotBlank()) {
+
                     // Asegúrate de que este ID existe en tu activity_add_pill.xml
                     binding.tvResult.text = visionText.text
+                    // 1. Guardamos el resultado en nuestra variable
+                    scannedText = visionText.text
+
+                    // 2. Lo mostramos en pantalla
+                    binding.tvResult.text = scannedText
+
                 } else {
                     binding.tvResult.text = "No se detectó texto."
                 }
