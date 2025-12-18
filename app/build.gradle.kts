@@ -5,14 +5,13 @@ plugins {
 
 android {
     namespace = "com.example.proyecto_alarma_pm"
-    compileSdk {
-        version = release(36)
-    }
+    compileSdk = 35
+
 
     defaultConfig {
         applicationId = "com.example.proyecto_alarma_pm"
         minSdk = 24
-        targetSdk = 36
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -29,11 +28,11 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
     buildFeatures {
         viewBinding = true
@@ -49,14 +48,14 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
-
-        //It allows you to connect camera x to the phone's camera better than camera 2.
-        implementation("androidx.camera:camera-camera2:1.3.0")
-        //It allows the camera to know when your app is open, paused, or closed. It prevents the camera from staying on.
-        implementation("androidx.camera:camera-lifecycle:1.3.0")
-        //It gives you access to the PreviewView. It's the visual component you'll put into the XML so the user can see what the camera is pointing at in real time.
-        implementation("androidx.camera:camera-view:1.3.0")
-        // ML Kit for text recognition
-        //It uses Google´s libraries and allows to convert the image to a String
-        implementation("com.google.mlkit:text-recognition:16.0.0")
+    //It allows you to connect camera x to the phone's camera better than camera 2.
+    implementation("androidx.camera:camera-camera2:1.3.0")
+    //It allows the camera to know when your app is open, paused, or closed. It prevents the camera from staying on.
+    implementation("androidx.camera:camera-lifecycle:1.3.0")
+    //It gives you access to the PreviewView. It's the visual component you'll put into the XML so the user can see what the camera is pointing at in real time.
+    implementation("androidx.camera:camera-view:1.3.0")
+    // ML Kit for text recognition
+    //It uses Google´s libraries and allows to convert the image to a String
+    implementation("com.google.mlkit:text-recognition:16.0.0")
     }
+
