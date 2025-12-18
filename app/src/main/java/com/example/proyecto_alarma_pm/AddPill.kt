@@ -50,7 +50,7 @@ class AddPill : AppCompatActivity() {
         setContentView(binding.root)
 
         // Botón Cámara (Cambiado para que abra la cámara en lugar de abrir PillList otra vez)
-        binding.OpenCamera.setOnClickListener {
+        binding.PagPrincipal.setOnClickListener {
             val intent = Intent(this, PillList::class.java)
             startActivity(intent)
         }

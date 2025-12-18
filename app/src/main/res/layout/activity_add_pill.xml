@@ -39,7 +39,7 @@
         app:layout_constraintTop_toBottomOf="@id/NumAlarms" />
 
     <Button
-        android:id="@+id/OpenCamera"
+        android:id="@+id/PagPrincipal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Cámara"
