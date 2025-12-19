@@ -22,6 +22,8 @@ class AddPill : AppCompatActivity() {
     private var scannedText: String = ""
     private val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
     private var HoursList = ArrayList<String>()
+    // creo esta lista para poder guardar varias pastillas de una tirada ya que si no solo se guardaria la ultima
+    private val addedPills = ArrayList<Pill>()
 
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -49,10 +51,9 @@ class AddPill : AppCompatActivity() {
         binding = ActivityAddPillBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Botón Cámara (Cambiado para que abra la cámara en lugar de abrir PillList otra vez)
+        // Botón para volver: Ahora simplemente cierra la actividad enviando lo que se haya guardado
         binding.PagPrincipal.setOnClickListener {
-            val intent = Intent(this, PillList::class.java)
-            startActivity(intent)
+            finish()
         }
 
         // Botón de guardar
@@ -75,17 +76,20 @@ class AddPill : AppCompatActivity() {
                 duration
             )
 
+            // Añadimos a la lista temporal
+            addedPills.add(newPill)
+
+            // Preparamos el resultado con la lista completa de esta sesión
             val intent = Intent()
-            intent.putExtra("New_Pill", newPill)
+            intent.putExtra("Pills_List", addedPills)
             setResult(RESULT_OK, intent)
             
-            // Limpiamos los campos por si acaso, aunque al hacer finish() ya no se verán
+            // Limpiamos los campos para poder añadir otra
             binding.Name.text.clear()
             binding.NumAlarms.text.clear()
             binding.Duration.text.clear()
             
-            Toast.makeText(this, "Pastilla guardada", Toast.LENGTH_SHORT).show()
-            
+            Toast.makeText(this, "Añadida. Total en esta sesión: ${addedPills.size}", Toast.LENGTH_SHORT).show()
         }
 
         // Botón de escanear (referencia al ID del XML)

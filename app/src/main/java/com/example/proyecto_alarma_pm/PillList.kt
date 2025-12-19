@@ -16,20 +16,21 @@ class PillList : AppCompatActivity() {
     private val myPills = ArrayList<Pill>()
     private lateinit var adapter: PillAdapter
 
-    // Launcher para recibir el resultado de AddPill
+    // Launcher para recibir el resultado de AddPill (ahora recibe una lista)
     private val getPillResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK) {
             val data = result.data
-            val nueva = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-                data?.getSerializableExtra("New_Pill", Pill::class.java)
+            val nuevas = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                data?.getSerializableExtra("Pills_List", ArrayList::class.java) as? ArrayList<Pill>
             } else {
                 @Suppress("DEPRECATION")
-                data?.getSerializableExtra("New_Pill") as? Pill
+                data?.getSerializableExtra("Pills_List") as? ArrayList<Pill>
             }
 
-            nueva?.let {
-                myPills.add(it)
-                adapter.notifyItemInserted(myPills.size - 1)
+            nuevas?.let {
+                // Añadimos todas las nuevas pastillas a nuestra lista principal
+                myPills.addAll(it)
+                adapter.notifyDataSetChanged()
             }
         }
     }
@@ -57,8 +58,9 @@ class PillList : AppCompatActivity() {
             getPillResult.launch(intent)
         }
 
-        binding.Camera.setOnClickListener {
-            // Acción opcional para "Ver Todo"
+        binding.About.setOnClickListener {
+            val intent = Intent(this, AboutUs::class.java)
+            getPillResult.launch(intent)
         }
     }
 }
