@@ -13,7 +13,7 @@ class SplashScreen : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_pill_list)
+        setContentView(R.layout.activity_main)
 
         Handler(Looper.getMainLooper()).postDelayed({
             val intent = Intent(this, PillList::class.java)
