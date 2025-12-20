@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.Toast
@@ -22,8 +23,9 @@ class AddPill : AppCompatActivity() {
     private var scannedText: String = ""
     private val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
     private var HoursList = ArrayList<String>()
-    // creo esta lista para poder guardar varias pastillas de una tirada ya que si no solo se guardaria la ultima
-    private val addedPills = ArrayList<Pill>()
+    
+    // Lista de pastillas actuales recibidas desde la lista principal
+    private var currentPills = ArrayList<Pill>()
 
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -51,12 +53,20 @@ class AddPill : AppCompatActivity() {
         binding = ActivityAddPillBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Botón para volver: Ahora simplemente cierra la actividad enviando lo que se haya guardado
+        // 1. Recibir la lista actual de medicamentos
+        val listaRecibida = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getSerializableExtra("Current_Pills", ArrayList::class.java) as? ArrayList<Pill>
+        } else {
+            @Suppress("DEPRECATION")
+            intent.getSerializableExtra("Current_Pills") as? ArrayList<Pill>
+        }
+        currentPills = listaRecibida ?: ArrayList()
+
         binding.PagPrincipal.setOnClickListener {
             finish()
         }
 
-        // Botón de guardar
+        // Botón Guardar
         binding.SaveButton.setOnClickListener {
             val name = binding.Name.text.toString()
             val numAlarmsStr = binding.NumAlarms.text.toString()
@@ -67,35 +77,50 @@ class AddPill : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val numAlarms = numAlarmsStr.toIntOrNull() ?: 0
-            
-            val newPill = Pill(
-                name,
-                numAlarms,
-                HoursList,
-                duration
-            )
+            val newPill = Pill(name, numAlarmsStr.toIntOrNull() ?: 0, HoursList, duration)
+            currentPills.add(newPill)
 
-            // Añadimos a la lista temporal
-            addedPills.add(newPill)
-
-            // Preparamos el resultado con la lista completa de esta sesión
-            val intent = Intent()
-            intent.putExtra("Pills_List", addedPills)
-            setResult(RESULT_OK, intent)
+            enviarResultado()
             
-            // Limpiamos los campos para poder añadir otra
             binding.Name.text.clear()
             binding.NumAlarms.text.clear()
             binding.Duration.text.clear()
-            
-            Toast.makeText(this, "Añadida. Total en esta sesión: ${addedPills.size}", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Añadida: $name", Toast.LENGTH_SHORT).show()
         }
 
-        // Botón de escanear (referencia al ID del XML)
+        // 2. Lógica del Botón Eliminar
+        binding.DeleteButton.setOnClickListener {
+            val nameToDelete = binding.Name.text.toString()
+            
+            if (nameToDelete.isBlank()) {
+                Toast.makeText(this, "Escanea o escribe un nombre para eliminar", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            // Buscamos la pastilla por nombre (ignorando mayúsculas)
+            val pillToRemove = currentPills.find { it.name.equals(nameToDelete, ignoreCase = true) }
+
+            if (pillToRemove != null) {
+                currentPills.remove(pillToRemove)
+                enviarResultado()
+                
+                binding.Name.text.clear()
+                Toast.makeText(this, "Eliminado: $nameToDelete", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "El medicamento '$nameToDelete' no existe", Toast.LENGTH_SHORT).show()
+            }
+        }
+
         binding.btnScan.setOnClickListener {
             checkCameraPermission()
         }
+    }
+
+    // Función auxiliar para enviar siempre la lista actualizada de vuelta
+    private fun enviarResultado() {
+        val intent = Intent()
+        intent.putExtra("Pills_List", currentPills)
+        setResult(RESULT_OK, intent)
     }
 
     private fun checkCameraPermission() {
@@ -123,7 +148,6 @@ class AddPill : AppCompatActivity() {
                 if (visionText.text.isNotBlank()) {
                     scannedText = visionText.text
                     binding.tvResult.text = scannedText
-                    // Ponemos el texto detectado en el campo de Nombre automáticamente
                     binding.Name.setText(scannedText)
                 } else {
                     binding.tvResult.text = "No se detectó texto."

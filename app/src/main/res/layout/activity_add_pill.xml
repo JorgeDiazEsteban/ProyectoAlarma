@@ -7,7 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".AddPill">
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -18,8 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:hint="Nombre de la pastilla"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:hint="Nombre de la pastilla" />
 
     <EditText
         android:id="@+id/NumAlarms"
@@ -27,49 +26,60 @@
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
         android:hint="Número de alarmas al día"
-        android:inputType="number"
-        app:layout_constraintTop_toBottomOf="@id/Name" />
+        android:inputType="number" />
 
     <EditText
         android:id="@+id/Duration"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:hint="Duración (ej: 1 mes)"
-        app:layout_constraintTop_toBottomOf="@id/NumAlarms" />
+        android:hint="Duración (ej: 1 mes)" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <Button
+            android:id="@+id/SaveButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Guardar"
+            android:layout_margin="10dp" />
+
+        <Button
+            android:id="@+id/DeleteButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Eliminar"
+            android:backgroundTint="#FF5252"
+            android:layout_margin="10dp" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/PagPrincipal"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Cámara"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="30dp" />
+        android:text="Volver a la Lista"
+        android:layout_marginTop="10dp" />
 
     <Button
-        android:id="@+id/SaveButton"
-        android:layout_width="wrap_content"
+        android:id="@+id/btnScan"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Guardar"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:layout_margin="30dp" />
+        android:layout_marginTop="20dp"
+        android:text="Escanear con Lens" />
 
+    <TextView
+        android:id="@+id/tvResult"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text=" "
+        android:textSize="16sp"
+        android:gravity="center" />
 
-        <Button
-            android:id="@+id/btnScan"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Escanear con Lens" />
-
-        <TextView
-            android:id="@+id/tvResult"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="El texto aparecerá aquí"
-            android:textSize="16sp" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

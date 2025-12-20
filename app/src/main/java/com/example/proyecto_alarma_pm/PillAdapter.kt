@@ -17,9 +17,9 @@ class PillAdapter(private val pillList: MutableList<Pill>) :
 
     override fun onBindViewHolder(holder: PillViewHolder, position: Int) {
         val pill = pillList[position]
-        holder.binding.tvName.text = pill.Name
-        holder.binding.tvInfo.text = "${pill.NumAlarms} veces al día"
-        holder.binding.tvDuration.text = "Duración: ${pill.Duration}"
+        holder.binding.tvName.text = pill.name
+        holder.binding.tvInfo.text = "${pill.numAlarms} veces al día"
+        holder.binding.tvDuration.text = "Duración: ${pill.duration}"
     }
 
     override fun getItemCount(): Int = pillList.size
