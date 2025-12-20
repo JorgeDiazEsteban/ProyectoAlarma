@@ -3,6 +3,7 @@ package com.example.proyecto_alarma_pm
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -31,6 +32,7 @@ class PillList : AppCompatActivity() {
                 // Añadimos todas las nuevas pastillas a nuestra lista principal
                 myPills.addAll(it)
                 adapter.notifyDataSetChanged()
+                checkEmptyList()
             }
         }
     }
@@ -52,6 +54,9 @@ class PillList : AppCompatActivity() {
         binding.pillsRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.pillsRecyclerView.adapter = adapter
 
+        // Comprobamos si la lista está vacía al inicio
+        checkEmptyList()
+
         // Botón para ir a añadir una pastilla
         binding.AddButton.setOnClickListener {
             val intent = Intent(this, AddPill::class.java)
@@ -60,7 +65,18 @@ class PillList : AppCompatActivity() {
 
         binding.About.setOnClickListener {
             val intent = Intent(this, AboutUs::class.java)
-            getPillResult.launch(intent)
+            startActivity(intent)
+        }
+    }
+
+    // Función para mostrar/ocultar el mensaje de "No hay medicamentos"
+    private fun checkEmptyList() {
+        if (myPills.isEmpty()) {
+            binding.emptyStateCard.visibility = View.VISIBLE
+            binding.pillsRecyclerView.visibility = View.GONE
+        } else {
+            binding.emptyStateCard.visibility = View.GONE
+            binding.pillsRecyclerView.visibility = View.VISIBLE
         }
     }
 }
