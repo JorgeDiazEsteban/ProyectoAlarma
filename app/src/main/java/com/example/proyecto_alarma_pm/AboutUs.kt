@@ -14,11 +14,13 @@ class AboutUs : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        binding = ActivityAboutUsBinding.inflate(layoutInflater)
+
         setContentView(binding.root)
 
         binding.MainButton.setOnClickListener {
             val intent = Intent(this, PillList::class.java)
-            startActivity(intent)
+
             finish()
         }
         binding.CloseButton.setOnClickListener {
