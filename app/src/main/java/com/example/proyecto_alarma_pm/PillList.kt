@@ -29,7 +29,8 @@ class PillList : AppCompatActivity() {
             }
 
             nuevas?.let {
-                // Añadimos todas las nuevas pastillas a nuestra lista principal
+                // Actualizamos la lista principal con lo que venga de AddPill (que incluye añadidos y borrados)
+                myPills.clear()
                 myPills.addAll(it)
                 adapter.notifyDataSetChanged()
                 checkEmptyList()
@@ -60,6 +61,8 @@ class PillList : AppCompatActivity() {
         // Botón para ir a añadir una pastilla
         binding.AddButton.setOnClickListener {
             val intent = Intent(this, AddPill::class.java)
+            // IMPORTANTE: Enviamos la lista actual para que AddPill pueda gestionarla (añadir/eliminar)
+            intent.putExtra("Current_Pills", myPills)
             getPillResult.launch(intent)
         }
 

@@ -52,7 +52,7 @@ class AddPill : AppCompatActivity() {
         binding = ActivityAddPillBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // 1. Recibir la lista actual de medicamentos
+        // 1. Recibir la lista actual de medicamentos de forma segura
         val listaRecibida = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getSerializableExtra("Current_Pills", ArrayList::class.java) as? ArrayList<Pill>
         } else {
@@ -87,7 +87,7 @@ class AddPill : AppCompatActivity() {
             Toast.makeText(this, "Añadida: $name", Toast.LENGTH_SHORT).show()
         }
 
-        // 2. Lógica del Botón Eliminar
+        // 2. Lógica del Botón Eliminar corregida
         binding.DeleteButton.setOnClickListener {
             val nameToDelete = binding.Name.text.toString().trim()
             
@@ -96,7 +96,7 @@ class AddPill : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // Buscamos la pastilla por nombre (ignorando mayúsculas)
+            // Buscamos la pastilla en la lista que recibimos (currentPills)
             val pillToRemove = currentPills.find { it.name.equals(nameToDelete, ignoreCase = true) }
 
             if (pillToRemove != null) {
