@@ -18,7 +18,10 @@ import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 
 class AddPill : AppCompatActivity() {
+
     private lateinit var binding: ActivityAddPillBinding
+
+    private var scannedText: String = ""
     private val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
 
     // 1. Lanzador para solicitar permiso de cámara
