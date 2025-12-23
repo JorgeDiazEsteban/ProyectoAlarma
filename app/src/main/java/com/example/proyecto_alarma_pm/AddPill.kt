@@ -167,8 +167,9 @@ class AddPill : AppCompatActivity() {
                         Toast.makeText(this, "No se detectó texto.", Toast.LENGTH_SHORT).show()
                     }
                 }
-                    .addOnFailureListener { e ->
-                        Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
-                    }
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
+}
