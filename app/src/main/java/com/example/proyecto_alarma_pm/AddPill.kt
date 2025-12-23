@@ -26,7 +26,7 @@ class AddPill : AppCompatActivity() {
 
     // 1. Lanzador para solicitar permiso de cámara
     private var HoursList = ArrayList<String>()
-    
+
     // Lista de pastillas actuales recibidas desde la lista principal
     private var currentPills = ArrayList<Pill>()
     private val requestPermissionLauncher = registerForActivityResult(
@@ -35,17 +35,19 @@ class AddPill : AppCompatActivity() {
         if (isGranted) {
             openCamera()
         } else {
-            Toast.makeText(this, "Permiso de cámara necesario para escanear", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Permiso de cámara necesario para escanear", Toast.LENGTH_SHORT)
+                .show()
         }
     }
 
     // 2. Lanzador para capturar la foto (Ya lo tenías, mantenlo)
-    private val cameraLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val imageBitmap = result.data?.extras?.get("data") as? Bitmap
-            imageBitmap?.let { processImageWithLens(it) }
+    private val cameraLauncher =
+        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val imageBitmap = result.data?.extras?.get("data") as? Bitmap
+                imageBitmap?.let { processImageWithLens(it) }
+            }
         }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,7 +74,8 @@ class AddPill : AppCompatActivity() {
             val duration = binding.Duration.text.toString()
 
             if (name.isBlank() || numAlarmsStr.isBlank() || duration.isBlank()) {
-                Toast.makeText(this, "Por favor, rellena todos los campos", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Por favor, rellena todos los campos", Toast.LENGTH_SHORT)
+                    .show()
                 return@setOnClickListener
             }
 
@@ -80,7 +83,7 @@ class AddPill : AppCompatActivity() {
             currentPills.add(newPill)
 
             enviarResultado()
-            
+
             binding.Name.text.clear()
             binding.NumAlarms.text.clear()
             binding.Duration.text.clear()
@@ -90,9 +93,13 @@ class AddPill : AppCompatActivity() {
         // 2. Lógica del Botón Eliminar corregida
         binding.DeleteButton.setOnClickListener {
             val nameToDelete = binding.Name.text.toString().trim()
-            
+
             if (nameToDelete.isBlank()) {
-                Toast.makeText(this, "Escanea o escribe un nombre para eliminar", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    this,
+                    "Escanea o escribe un nombre para eliminar",
+                    Toast.LENGTH_SHORT
+                ).show()
                 return@setOnClickListener
             }
 
@@ -102,11 +109,12 @@ class AddPill : AppCompatActivity() {
             if (pillToRemove != null) {
                 currentPills.remove(pillToRemove)
                 enviarResultado()
-                
+
                 binding.Name.text.clear()
                 Toast.makeText(this, "Eliminado: $nameToDelete", Toast.LENGTH_SHORT).show()
             } else {
-                Toast.makeText(this, "El medicamento '$nameToDelete' no existe", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "El medicamento '$nameToDelete' no existe", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
 
@@ -122,11 +130,16 @@ class AddPill : AppCompatActivity() {
         intent.putExtra("Pills_List", currentPills)
         setResult(RESULT_OK, intent)
     }
+
     private fun checkCameraPermission() {
         when {
-            ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED -> {
+            ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.CAMERA
+            ) == PackageManager.PERMISSION_GRANTED -> {
                 openCamera()
             }
+
             else -> {
                 // Solicita el permiso directamente
                 requestPermissionLauncher.launch(Manifest.permission.CAMERA)
@@ -144,17 +157,18 @@ class AddPill : AppCompatActivity() {
         recognizer.process(image)
             .addOnSuccessListener { visionText ->
                 if (visionText.text.isNotBlank()) {
-                val detectedText = visionText.text
-                if (detectedText.isNotBlank()) {
-                    scannedText = detectedText.trim()
-                    binding.Name.setText(scannedText)
-                    Toast.makeText(this, "Nombre detectado: $scannedText", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(this, "No se detectó texto.", Toast.LENGTH_SHORT).show()
+                    val detectedText = visionText.text
+                    if (detectedText.isNotBlank()) {
+                        scannedText = detectedText.trim()
+                        binding.Name.setText(scannedText)
+                        Toast.makeText(this, "Nombre detectado: $scannedText", Toast.LENGTH_SHORT)
+                            .show()
+                    } else {
+                        Toast.makeText(this, "No se detectó texto.", Toast.LENGTH_SHORT).show()
+                    }
                 }
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                    .addOnFailureListener { e ->
+                        Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+                    }
             }
     }
-}
