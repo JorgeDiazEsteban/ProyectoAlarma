@@ -68,7 +68,7 @@ class AddPill : AppCompatActivity() {
 
         // Botón Guardar
         binding.SaveButton.setOnClickListener {
-            val name = binding.Name.text.toString()
+            val name = binding.Name.text.toString().trim()
             val numAlarmsStr = binding.NumAlarms.text.toString()
             val duration = binding.Duration.text.toString()
 
@@ -90,7 +90,7 @@ class AddPill : AppCompatActivity() {
 
         // 2. Lógica del Botón Eliminar
         binding.DeleteButton.setOnClickListener {
-            val nameToDelete = binding.Name.text.toString()
+            val nameToDelete = binding.Name.text.toString().trim()
             
             if (nameToDelete.isBlank()) {
                 Toast.makeText(this, "Escanea o escribe un nombre para eliminar", Toast.LENGTH_SHORT).show()
@@ -146,7 +146,7 @@ class AddPill : AppCompatActivity() {
         recognizer.process(image)
             .addOnSuccessListener { visionText ->
                 if (visionText.text.isNotBlank()) {
-                    scannedText = visionText.text
+                    scannedText = visionText.text.trim()
                     binding.tvResult.text = scannedText
                     binding.Name.setText(scannedText)
                 } else {

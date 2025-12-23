@@ -20,7 +20,7 @@ class AboutUs : AppCompatActivity() {
 
         binding.MainButton.setOnClickListener {
             val intent = Intent(this, PillList::class.java)
-            startActivity(intent)
+
             finish()
         }
         binding.CloseButton.setOnClickListener {
