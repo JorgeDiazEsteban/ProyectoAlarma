@@ -50,6 +50,21 @@ class PillList : AppCompatActivity() {
             insets
         }
 
+        // RECUPERAR DATOS AL GIRAR PANTALLA
+        if (savedInstanceState != null) {
+            val savedPills = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                savedInstanceState.getSerializable("saved_pills", ArrayList::class.java) as? ArrayList<Pill>
+            } else {
+                @Suppress("DEPRECATION")
+                savedInstanceState.getSerializable("saved_pills") as? ArrayList<Pill>
+            }
+
+            savedPills?.let {
+                myPills.clear()
+                myPills.addAll(it)
+            }
+        }
+
         // Configurar el Adaptador y el RecyclerView
         adapter = PillAdapter(myPills)
         binding.pillsRecyclerView.layoutManager = LinearLayoutManager(this)
@@ -70,6 +85,12 @@ class PillList : AppCompatActivity() {
             val intent = Intent(this, AboutUs::class.java)
             startActivity(intent)
         }
+    }
+
+    // Guardar la lista antes de que la actividad se destruya por rotación
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putSerializable("saved_pills", myPills)
     }
 
     // Función para mostrar/ocultar el mensaje de "No hay medicamentos"
