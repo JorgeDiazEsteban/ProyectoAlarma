@@ -145,16 +145,17 @@ class AddPill : AppCompatActivity() {
 
         recognizer.process(image)
             .addOnSuccessListener { visionText ->
-                if (visionText.text.isNotBlank()) {
-                    scannedText = visionText.text.trim()
-                    binding.tvResult.text = scannedText
+                val detectedText = visionText.text
+                if (detectedText.isNotBlank()) {
+                    scannedText = detectedText.trim()
                     binding.Name.setText(scannedText)
+                    Toast.makeText(this, "Nombre detectado: $scannedText", Toast.LENGTH_SHORT).show()
                 } else {
-                    binding.tvResult.text = "No se detectó texto."
+                    Toast.makeText(this, "No se detectó texto.", Toast.LENGTH_SHORT).show()
                 }
             }
             .addOnFailureListener { e ->
-                binding.tvResult.text = "Error: ${e.message}"
+                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 }
