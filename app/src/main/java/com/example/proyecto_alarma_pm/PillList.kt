@@ -17,6 +17,7 @@ class PillList : AppCompatActivity() {
     private val myPills = ArrayList<Pill>()
     private lateinit var adapter: PillAdapter
 
+    // Launcher para recibir el resultado de AddPill (ahora recibe una lista)
     private val getPillResult = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == RESULT_OK) {
             val data = result.data
@@ -28,13 +29,11 @@ class PillList : AppCompatActivity() {
             }
 
             nuevas?.let {
+                // Actualizamos la lista principal con lo que venga de AddPill (que incluye añadidos y borrados)
                 myPills.clear()
                 myPills.addAll(it)
                 adapter.notifyDataSetChanged()
                 checkEmptyList()
-                
-                // GUARDAR DATOS EN DISCO
-                DataManager.savePills(this, myPills)
             }
         }
     }
@@ -45,15 +44,13 @@ class PillList : AppCompatActivity() {
         binding = ActivityPillListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // CARGAR DATOS DESDE EL DISCO
-        myPills.addAll(DataManager.loadPills(this))
-
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
+        // RECUPERAR DATOS AL GIRAR PANTALLA
         if (savedInstanceState != null) {
             val savedPills = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 savedInstanceState.getSerializable("saved_pills", ArrayList::class.java) as? ArrayList<Pill>
@@ -68,14 +65,18 @@ class PillList : AppCompatActivity() {
             }
         }
 
+        // Configurar el Adaptador y el RecyclerView
         adapter = PillAdapter(myPills)
         binding.pillsRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.pillsRecyclerView.adapter = adapter
 
+        // Comprobamos si la lista está vacía al inicio
         checkEmptyList()
 
+        // Botón para ir a añadir una pastilla
         binding.AddButton.setOnClickListener {
             val intent = Intent(this, AddPill::class.java)
+            // IMPORTANTE: Enviamos la lista actual para que AddPill pueda gestionarla (añadir/eliminar)
             intent.putExtra("Current_Pills", myPills)
             getPillResult.launch(intent)
         }
@@ -86,11 +87,13 @@ class PillList : AppCompatActivity() {
         }
     }
 
+    // Guardar la lista antes de que la actividad se destruya por rotación
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putSerializable("saved_pills", myPills)
     }
 
+    // Función para mostrar/ocultar el mensaje de "No hay medicamentos"
     private fun checkEmptyList() {
         if (myPills.isEmpty()) {
             binding.emptyStateCard.visibility = View.VISIBLE
