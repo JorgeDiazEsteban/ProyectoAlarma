@@ -24,12 +24,18 @@ import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 
-// El Receiver DEBE estar fuera o ser estático para que el Manifest lo encuentre
+// El Receiver corregido para abrir la Activity Alarm
 class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-        // Para que se vea aunque la app esté cerrada
-        Toast.makeText(context, "¡ATENCIÓN! Hora de tu medicina", Toast.LENGTH_LONG).show()
-        Log.d("ALARMAS", "¡Alarma recibida con éxito!")
+        Log.d("ALARMAS", "¡Alarma recibida! Abriendo pantalla de alarma...")
+        
+        val alarmIntent = Intent(context, Alarm::class.java).apply {
+            // Flag necesario para abrir una actividad desde un Receiver
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            // Flag para que si ya está abierta, no cree otra nueva encima
+            addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        }
+        context.startActivity(alarmIntent)
     }
 }
 
@@ -62,7 +68,6 @@ class AddPill : AppCompatActivity() {
         binding = ActivityAddPillBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Recuperar lista actual
         val listaRecibida = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getSerializableExtra("Current_Pills", ArrayList::class.java) as? ArrayList<Pill>
         } else {
@@ -73,7 +78,6 @@ class AddPill : AppCompatActivity() {
 
         binding.PagPrincipal.setOnClickListener { finish() }
 
-        // Botón para añadir horas
         binding.btnAddHour.setOnClickListener {
             val hora = binding.NumAlarms.text.toString().trim()
             if (validarFormato(hora)) {
@@ -83,7 +87,6 @@ class AddPill : AppCompatActivity() {
             }
         }
 
-        // REPARADO: Botón Eliminar
         binding.DeleteButton.setOnClickListener {
             val nameToDelete = binding.Name.text.toString().trim()
             if (nameToDelete.isBlank()) {
@@ -102,7 +105,6 @@ class AddPill : AppCompatActivity() {
             }
         }
 
-        // Botón Guardar
         binding.SaveButton.setOnClickListener {
             val name = binding.Name.text.toString().trim()
             val duration = binding.Duration.text.toString().trim()
@@ -149,8 +151,6 @@ class AddPill : AppCompatActivity() {
 
     private fun programarTodasLasAlarmas() {
         val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
-        
-        // Usar la hora actual para generar IDs únicos de alarmas y no sobrescribirlas
         val requestData = System.currentTimeMillis().toInt()
 
         hoursList.forEachIndexed { indice, textoHora ->
@@ -163,10 +163,7 @@ class AddPill : AppCompatActivity() {
                     set(Calendar.HOUR_OF_DAY, hora)
                     set(Calendar.MINUTE, minutos)
                     set(Calendar.SECOND, 0)
-                    // Si la hora ya pasó hoy, programarla para mañana
-                    if (before(Calendar.getInstance())) {
-                        add(Calendar.DATE, 1)
-                    }
+                    if (before(Calendar.getInstance())) add(Calendar.DATE, 1)
                 }
 
                 val intent = Intent(this, AlarmReceiver::class.java)
@@ -175,22 +172,11 @@ class AddPill : AppCompatActivity() {
                     PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
                 )
 
-                // Usamos setExactAndAllowWhileIdle para que funcione incluso en modo ahorro
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    alarmManager.setExactAndAllowWhileIdle(
-                        AlarmManager.RTC_WAKEUP,
-                        cal.timeInMillis,
-                        pendingIntent
-                    )
+                    alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, cal.timeInMillis, pendingIntent)
                 } else {
-                    alarmManager.setExact(
-                        AlarmManager.RTC_WAKEUP,
-                        cal.timeInMillis,
-                        pendingIntent
-                    )
+                    alarmManager.setExact(AlarmManager.RTC_WAKEUP, cal.timeInMillis, pendingIntent)
                 }
-                
-                Log.d("ALARMAS", "Alarma programada para: ${cal.time}")
             } catch (e: Exception) {
                 Log.e("ALARMAS", "Error: ${e.message}")
             }
