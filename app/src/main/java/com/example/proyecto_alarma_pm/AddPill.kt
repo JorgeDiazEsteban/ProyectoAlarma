@@ -2,13 +2,19 @@ package com.example.proyecto_alarma_pm
 
 import android.Manifest
 import android.app.Activity
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.BroadcastReceiver
+import android.content.Context
 import androidx.core.content.ContextCompat
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.icu.util.Calendar
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
@@ -18,23 +24,27 @@ import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 
+// El Receiver DEBE estar fuera o ser estático para que el Manifest lo encuentre
+class AlarmReceiver : BroadcastReceiver() {
+    override fun onReceive(context: Context, intent: Intent) {
+        // Para que se vea aunque la app esté cerrada
+        Toast.makeText(context, "¡ATENCIÓN! Hora de tu medicina", Toast.LENGTH_LONG).show()
+        Log.d("ALARMAS", "¡Alarma recibida con éxito!")
+    }
+}
+
 class AddPill : AppCompatActivity() {
     private lateinit var binding: ActivityAddPillBinding
     private var scannedText: String = ""
     private val recognizer = TextRecognition.getClient(TextRecognizerOptions.DEFAULT_OPTIONS)
-    private var HoursList = ArrayList<String>()
-    
-    // Lista de pastillas actuales recibidas desde la lista principal
+    private var hoursList = ArrayList<String>()
     private var currentPills = ArrayList<Pill>()
 
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { isGranted ->
-        if (isGranted) {
-            openCamera()
-        } else {
-            Toast.makeText(this, "Permiso de cámara necesario para escanear", Toast.LENGTH_SHORT).show()
-        }
+        if (isGranted) openCamera()
+        else Toast.makeText(this, "Permiso necesario", Toast.LENGTH_SHORT).show()
     }
 
     private val cameraLauncher = registerForActivityResult(
@@ -49,11 +59,10 @@ class AddPill : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
         binding = ActivityAddPillBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // 1. Recibir la lista actual de medicamentos de forma segura
+        // Recuperar lista actual
         val listaRecibida = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getSerializableExtra("Current_Pills", ArrayList::class.java) as? ArrayList<Pill>
         } else {
@@ -62,61 +71,58 @@ class AddPill : AppCompatActivity() {
         }
         currentPills = listaRecibida ?: ArrayList()
 
-        binding.PagPrincipal.setOnClickListener {
-            finish()
+        binding.PagPrincipal.setOnClickListener { finish() }
+
+        // Botón para añadir horas
+        binding.btnAddHour.setOnClickListener {
+            val hora = binding.NumAlarms.text.toString().trim()
+            if (validarFormato(hora)) {
+                hoursList.add(hora)
+                binding.NumAlarms.text.clear()
+                Toast.makeText(this, "Hora $hora añadida", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        // REPARADO: Botón Eliminar
+        binding.DeleteButton.setOnClickListener {
+            val nameToDelete = binding.Name.text.toString().trim()
+            if (nameToDelete.isBlank()) {
+                Toast.makeText(this, "Escribe el nombre a eliminar", Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+
+            val pillToRemove = currentPills.find { it.name.equals(nameToDelete, ignoreCase = true) }
+            if (pillToRemove != null) {
+                currentPills.remove(pillToRemove)
+                enviarResultado()
+                binding.Name.text.clear()
+                Toast.makeText(this, "Eliminado: $nameToDelete", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "No se encontró: $nameToDelete", Toast.LENGTH_SHORT).show()
+            }
         }
 
         // Botón Guardar
         binding.SaveButton.setOnClickListener {
             val name = binding.Name.text.toString().trim()
-            val numAlarmsStr = binding.NumAlarms.text.toString()
-            val duration = binding.Duration.text.toString()
-
-            if (name.isBlank() || numAlarmsStr.isBlank() || duration.isBlank()) {
-                Toast.makeText(this, "Por favor, rellena todos los campos", Toast.LENGTH_SHORT).show()
+            val duration = binding.Duration.text.toString().trim()
+            
+            if (name.isBlank() || hoursList.isEmpty() || duration.isBlank()) {
+                Toast.makeText(this, "Faltan datos o añadir horas", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
-            val newPill = Pill(name, numAlarmsStr.toIntOrNull() ?: 0, HoursList, duration)
+            val newPill = Pill(name, hoursList.size, hoursList, duration)
             currentPills.add(newPill)
 
+            programarTodasLasAlarmas()
             enviarResultado()
-            
-            binding.Name.text.clear()
-            binding.NumAlarms.text.clear()
-            binding.Duration.text.clear()
-            Toast.makeText(this, "Añadida: $name", Toast.LENGTH_SHORT).show()
+            finish()
         }
 
-        // 2. Lógica del Botón Eliminar corregida
-        binding.DeleteButton.setOnClickListener {
-            val nameToDelete = binding.Name.text.toString().trim()
-            
-            if (nameToDelete.isBlank()) {
-                Toast.makeText(this, "Escanea o escribe un nombre para eliminar", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            // Buscamos la pastilla en la lista que recibimos (currentPills)
-            val pillToRemove = currentPills.find { it.name.equals(nameToDelete, ignoreCase = true) }
-
-            if (pillToRemove != null) {
-                currentPills.remove(pillToRemove)
-                enviarResultado()
-                
-                binding.Name.text.clear()
-                Toast.makeText(this, "Eliminado: $nameToDelete", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "El medicamento '$nameToDelete' no existe", Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        binding.btnScan.setOnClickListener {
-            checkCameraPermission()
-        }
+        binding.btnScan.setOnClickListener { checkCameraPermission() }
     }
 
-    // Función auxiliar para enviar siempre la lista actualizada de vuelta
     private fun enviarResultado() {
         val intent = Intent()
         intent.putExtra("Pills_List", currentPills)
@@ -124,14 +130,10 @@ class AddPill : AppCompatActivity() {
     }
 
     private fun checkCameraPermission() {
-        when {
-            ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
-                    == PackageManager.PERMISSION_GRANTED -> {
-                openCamera()
-            }
-            else -> {
-                requestPermissionLauncher.launch(Manifest.permission.CAMERA)
-            }
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            openCamera()
+        } else {
+            requestPermissionLauncher.launch(Manifest.permission.CAMERA)
         }
     }
 
@@ -140,22 +142,69 @@ class AddPill : AppCompatActivity() {
         cameraLauncher.launch(intent)
     }
 
+    private fun validarFormato(texto: String): Boolean {
+        val patron = Regex("^([01][0-9]|2[0-3]):[0-5][0-9]$")
+        return patron.matches(texto)
+    }
+
+    private fun programarTodasLasAlarmas() {
+        val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        
+        // Usar la hora actual para generar IDs únicos de alarmas y no sobrescribirlas
+        val requestData = System.currentTimeMillis().toInt()
+
+        hoursList.forEachIndexed { indice, textoHora ->
+            try {
+                val partes = textoHora.split(":")
+                val hora = partes[0].toInt()
+                val minutos = partes[1].toInt()
+
+                val cal = Calendar.getInstance().apply {
+                    set(Calendar.HOUR_OF_DAY, hora)
+                    set(Calendar.MINUTE, minutos)
+                    set(Calendar.SECOND, 0)
+                    // Si la hora ya pasó hoy, programarla para mañana
+                    if (before(Calendar.getInstance())) {
+                        add(Calendar.DATE, 1)
+                    }
+                }
+
+                val intent = Intent(this, AlarmReceiver::class.java)
+                val pendingIntent = PendingIntent.getBroadcast(
+                    this, requestData + indice, intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                )
+
+                // Usamos setExactAndAllowWhileIdle para que funcione incluso en modo ahorro
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    alarmManager.setExactAndAllowWhileIdle(
+                        AlarmManager.RTC_WAKEUP,
+                        cal.timeInMillis,
+                        pendingIntent
+                    )
+                } else {
+                    alarmManager.setExact(
+                        AlarmManager.RTC_WAKEUP,
+                        cal.timeInMillis,
+                        pendingIntent
+                    )
+                }
+                
+                Log.d("ALARMAS", "Alarma programada para: ${cal.time}")
+            } catch (e: Exception) {
+                Log.e("ALARMAS", "Error: ${e.message}")
+            }
+        }
+    }
+
     private fun processImageWithLens(bitmap: Bitmap) {
         val image = InputImage.fromBitmap(bitmap, 0)
-
         recognizer.process(image)
             .addOnSuccessListener { visionText ->
                 val detectedText = visionText.text
                 if (detectedText.isNotBlank()) {
-                    scannedText = detectedText.trim()
-                    binding.Name.setText(scannedText)
-                    Toast.makeText(this, "Nombre detectado: $scannedText", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(this, "No se detectó texto.", Toast.LENGTH_SHORT).show()
+                    binding.Name.setText(detectedText.trim())
                 }
-            }
-            .addOnFailureListener { e ->
-                Toast.makeText(this, "Error: ${e.message}", Toast.LENGTH_SHORT).show()
             }
     }
 }
