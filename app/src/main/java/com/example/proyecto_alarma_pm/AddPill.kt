@@ -24,16 +24,15 @@ import com.google.mlkit.vision.common.InputImage
 import com.google.mlkit.vision.text.TextRecognition
 import com.google.mlkit.vision.text.latin.TextRecognizerOptions
 
-// El Receiver corregido para abrir la Activity Alarm
+// El Receiver ahora envía la lista de medicamentos a la Activity Alarm
 class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-        Log.d("ALARMAS", "¡Alarma recibida! Abriendo pantalla de alarma...")
+        val pills = intent.getSerializableExtra("Pills_List")
         
         val alarmIntent = Intent(context, Alarm::class.java).apply {
-            // Flag necesario para abrir una actividad desde un Receiver
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            // Flag para que si ya está abierta, no cree otra nueva encima
             addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            putExtra("Pills_List", pills) // Enviamos la lista a la pantalla final
         }
         context.startActivity(alarmIntent)
     }
@@ -166,7 +165,10 @@ class AddPill : AppCompatActivity() {
                     if (before(Calendar.getInstance())) add(Calendar.DATE, 1)
                 }
 
-                val intent = Intent(this, AlarmReceiver::class.java)
+                val intent = Intent(this, AlarmReceiver::class.java).apply {
+                    putExtra("Pills_List", currentPills) // PASAR LA LISTA
+                }
+                
                 val pendingIntent = PendingIntent.getBroadcast(
                     this, requestData + indice, intent,
                     PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
