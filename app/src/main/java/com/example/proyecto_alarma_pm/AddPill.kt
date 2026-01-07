@@ -29,6 +29,7 @@ import com.google.mlkit.vision.text.latin.TextRecognizerOptions
  */
 class AlarmReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
+        @Suppress("DEPRECATION")
         // Recuperamos la lista de medicamentos para pasarla a la pantalla de la alarma
         val pills = intent.getSerializableExtra("Pills_List")
         
