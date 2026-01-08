@@ -28,7 +28,6 @@ class PillList : AppCompatActivity() {
             val nuevas = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 data?.getSerializableExtra("Pills_List", ArrayList::class.java) as? ArrayList<Pill>
             } else {
-                @Suppress("DEPRECATION")
                 data?.getSerializableExtra("Pills_List") as? ArrayList<Pill>
             }
 
