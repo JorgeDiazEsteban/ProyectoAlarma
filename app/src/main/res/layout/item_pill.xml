@@ -18,7 +18,7 @@
             android:id="@+id/tvName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nombre"
+            android:text="@string/Name"
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -26,14 +26,14 @@
             android:id="@+id/tvInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="X veces al día"
+            android:text="@string/TimesDay"
             android:textColor="#666666" />
 
         <TextView
             android:id="@+id/tvDuration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Duración"
+            android:text="@string/Duration"
             android:textSize="12sp" />
 
     </LinearLayout>

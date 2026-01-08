@@ -6,4 +6,19 @@
     <string name="Contact">Si tiene cualquier problema con la aplicación contacte con nosotros al siguiente correo: correoinventado@ifp.es</string>
     <string name="ToTheMain">Pag Principal</string>
     <string name="Close">Cerrar app</string>
+    <string name="Duration">Duración (ej: 1 mes)</string>
+    <string name="Save">Guardar</string>
+    <string name="Delete">Eliminar</string>
+    <string name="RtList">Volver a la lista</string>
+    <string name="ScanLens">Escanear con Lens</string>
+    <string name="AddHourList">Añadir Hora a la lista</string>
+    <string name="TakeHour">Hora de la toma (ej: 08:30)</string>
+    <string name="PillName">Nombre de la pastilla</string>
+    <string name="NotMeds">No hay medicamentos</string>
+    <string name="ConfMed">Aún no has añadido niguna pastilla</string>
+    <string name="ConfBtn">Pulsa el botón \'Añadir\' para empezar</string>
+    <string name="AddPill">Añadir pastilla</string>
+    <string name="AboutUs">Sobre nosotros</string>
+    <string name="Name">Nombre</string>
+    <string name="TimesDay">X veces al día</string>
 </resources>

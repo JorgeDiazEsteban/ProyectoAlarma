@@ -6,7 +6,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AddPill">
+    tools:context=".AddPill"
+    style="@style/backgroundPro">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -15,34 +16,37 @@
 
     <EditText
         android:id="@+id/Name"
+        style="@style/fontPro"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:hint="Nombre de la pastilla" />
+        android:hint="@string/PillName" />
 
     <EditText
         android:id="@+id/NumAlarms"
+        style="@style/fontPro"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="20dp"
-        android:hint="Hora de la toma (ej: 08:30)"
+        android:hint="@string/TakeHour"
         android:inputType="time" />
 
     <Button
         android:id="@+id/btnAddHour"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Añadir Hora a la lista"
+        android:text="@string/AddHourList"
         android:layout_marginHorizontal="20dp"
         android:layout_marginBottom="10dp"/>
 
     <EditText
         android:id="@+id/Duration"
+        style="@style/fontPro"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="20dp"
-        android:hint="Duración (ej: 1 mes)" />
+        android:hint="@string/Duration"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -54,14 +58,14 @@
             android:id="@+id/SaveButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Guardar"
+            android:text="@string/Save"
             android:layout_margin="10dp" />
 
         <Button
             android:id="@+id/DeleteButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Eliminar"
+            android:text="@string/Delete"
             android:backgroundTint="#FF5252"
             android:layout_margin="10dp" />
     </LinearLayout>
@@ -70,7 +74,7 @@
         android:id="@+id/PagPrincipal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Volver a la Lista"
+        android:text="@string/RtList"
         android:layout_marginTop="10dp" />
 
     <Button
@@ -78,7 +82,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="Escanear con Lens" />
+        android:text="@string/ScanLens" />
 
     </LinearLayout>
 
