@@ -8,8 +8,6 @@
     tools:context=".PillList"
     style="@style/backgroundPro">
 
-
-
     <ImageView
         android:id="@+id/img_splash"
         android:layout_width="357dp"
