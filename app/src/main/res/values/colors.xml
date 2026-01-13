@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="neon_cyan">#00E5FF</color>
+    <color name="dark_blue_accent">#1A237E</color>
+    <color name="dark_blue_accent_pressed">#283593</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 </resources>
