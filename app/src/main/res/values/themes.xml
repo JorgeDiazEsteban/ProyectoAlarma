@@ -1,48 +1,20 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
     <style name="Base.Theme.Proyecto_Alarma_PM" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-
-        <!-- Apply the modern button style to all buttons -->
         <item name="materialButtonStyle">@style/Widget.App.Button</item>
     </style>
 
     <style name="Theme.Proyecto_Alarma_PM" parent="Base.Theme.Proyecto_Alarma_PM" />
 
-    <!-- Custom font style -->
     <style name="fontPro">
         <item name="android:fontFamily">monospace</item>
         <item name="android:textColor">@color/white</item>
         <item name="android:textColorHint">@color/white</item>
     </style>
 
-    <!-- Custom background style -->
     <style name="backgroundPro">
         <item name="android:background">@drawable/background</item>
     </style>
 
-    <!-- Lens icon style -->
-    <style name="lens_icon">
-        <item name="icon">@drawable/lens</item>
-    </style>
-
-    <!-- ===================== Modern Button Style ===================== -->
-
-    <!-- Style for rounded corners -->
-    <style name="ShapeAppearance.App.Button" parent="">
-        <item name="cornerFamily">rounded</item>
-        <item name="cornerSize">24dp</item>
-    </style>
-
-    <!-- Modern Button Style Definition -->
-    <style name="Widget.App.Button" parent="Widget.Material3.Button">
-        <item name="backgroundTint">@color/neon_cyan</item>
-        <item name="android:textColor">@color/black</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:fontFamily">monospace</item>
-        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.App.Button</item>
-    </style>
-    
     <style name="ret_icon">
         <item name="icon">@drawable/ret</item>
     </style>
@@ -70,4 +42,27 @@
     <style name="close_icon">
         <item name="icon">@drawable/close_icon</item>
     </style>
+    <style name="lens_icon">
+        <item name="icon">@drawable/lens</item>
+    </style>
+
+
+    <style name="ShapeAppearance.App.Button" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">24dp</item>
+    </style>
+
+
+    <style name="Widget.App.Button" parent="Widget.Material3.Button">
+        <item name="backgroundTint">@color/dark_blue_accent</item>
+        <item name="strokeColor">@color/white</item>
+        <item name="strokeWidth">2dp</item>
+        <item name="android:elevation">6dp</item> <!-- elevacion para la sombra -->
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:fontFamily">monospace</item>
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearance.App.Button</item>
+        <item name="rippleColor">@color/neon_cyan</item>
+    </style>
+
 </resources>

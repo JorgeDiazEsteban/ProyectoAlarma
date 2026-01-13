@@ -33,11 +33,11 @@
         android:inputType="time" />
 
     <Button
-        style="@style/clock_icon"
         android:id="@+id/btnAddHour"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/AddHourList"
+        app:icon="@drawable/clock_icon"
         android:layout_marginHorizontal="20dp"
         android:layout_marginBottom="10dp"/>
 
@@ -56,37 +56,39 @@
         android:gravity="center">
 
         <Button
-            style="@style/save_icon"
             android:id="@+id/SaveButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/Save"
+            app:icon="@drawable/save_icon"
             android:layout_margin="10dp" />
 
         <Button
-            style="@style/delete_icon"
             android:id="@+id/DeleteButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/Delete"
             android:backgroundTint="#FF5252"
+            app:icon="@drawable/delete_icon"
+            app:strokeColor="@color/white"
+            app:strokeWidth="2dp"
             android:layout_margin="10dp" />
     </LinearLayout>
 
     <Button
-        style="@style/ret_icon"
         android:id="@+id/PagPrincipal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/RtList"
+        app:icon="@drawable/ret"
         android:layout_marginTop="10dp" />
 
     <Button
-        style="@style/lens_icon"
         android:id="@+id/btnScan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        app:icon="@drawable/lens"
         android:text="@string/ScanLens" />
 
     </LinearLayout>
