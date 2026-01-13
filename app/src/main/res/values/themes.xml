@@ -15,4 +15,8 @@
     <style name="backgroundPro">
         <item name="android:background">@drawable/background</item>
     </style>
+
+    <style name="lens_icon">
+        <item name="icon">@drawable/lens</item>
+    </style>
 </resources>
