@@ -1,11 +1,15 @@
 <resources>
     <string name="app_name">Proyecto_Alarma_PM</string>
-    <string name="About">Esta aplición esta creada por el grupo de 2DAM_M formado por Jorge Diaz Esteban, Diego Diaz-Hellin Lopez, Rodrigo Herro Hernandez, Pablo Mata de la Fuente.</string>
-    <string name="Objective">El objetivo de nuestra aplicación es crear un recordatorio para que la gente no se le olvide tomar las distintas medicaciones que tienen.
-        El problema al que nos enfrentamos es que no solo sea un recordatorio, sino una manera real para que se las tomen. Para ello hemos creado una dinámica por la cual van a tener que ir con el móvil hasta la medicina y escanear el codigo de barras o el QR para que se apague la alarma.</string>
+
+    <!-- About Us Screen -->
+    <string name="about_us_title">Sobre Nosotros</string>
+    <string name="About">Esta aplicación ha sido desarrollada por el equipo de 2DAM_M: Jorge Díaz Esteban, Diego Díaz-Hellín López, Rodrigo Herrero Hernández y Pablo Mata de la Fuente.</string>
+    <string name="Objective">Nuestro objetivo es asegurar que nunca más olvides una toma. Más que un simple recordatorio, hemos diseñado una solución interactiva: para detener la alarma, deberás acercarte y escanear el código QR o de barras de tu medicamento. Así, garantizamos no solo que lo recuerdes, sino que lo tengas en la mano.</string>
     <string name="Contact">Si tiene cualquier problema con la aplicación contacte con nosotros al siguiente correo: correoinventado@ifp.es</string>
     <string name="ToTheMain">Pag Principal</string>
     <string name="Close">Cerrar app</string>
+
+    <!-- Add/Edit Pill Screen -->
     <string name="Duration">Duración (ej: 1 mes)</string>
     <string name="Save">Guardar</string>
     <string name="Delete">Eliminar</string>
@@ -14,6 +18,8 @@
     <string name="AddHourList">Añadir Hora a la lista</string>
     <string name="TakeHour">Hora de la toma (ej: 08:30)</string>
     <string name="PillName">Nombre de la pastilla</string>
+    
+    <!-- Pill List Screen -->
     <string name="NotMeds">No hay medicamentos</string>
     <string name="ConfMed">Aún no has añadido niguna pastilla</string>
     <string name="ConfBtn">Pulsa el botón \'Añadir\' para empezar</string>
@@ -21,4 +27,6 @@
     <string name="AboutUs">Sobre nosotros</string>
     <string name="Name">Nombre</string>
     <string name="TimesDay">X veces al día</string>
+    <string name="btn_alarm_off">ESCANEA PARA APAGAR</string>
+    <string name="hora_de_la_medicacion">¡HORA DE TU MEDICACIÓN!</string>
 </resources>

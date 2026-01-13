@@ -10,6 +10,19 @@
     style="@style/backgroundPro">
 
     <TextView
+        android:id="@+id/TitleAbout"
+        style="@style/fontPro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/about_us_title"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
         android:id="@+id/About"
         style="@style/fontPro"
         android:layout_width="0dp"
@@ -17,9 +30,10 @@
         android:layout_marginTop="24dp"
         android:text="@string/About"
         android:textSize="18sp"
+        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/TitleAbout" />
 
     <TextView
         android:id="@+id/Objective"
@@ -29,44 +43,46 @@
         android:layout_marginTop="24dp"
         android:text="@string/Objective"
         android:textSize="16sp"
+        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/About" />
 
     <Button
-        style="@style/ret_icon"
         android:id="@+id/MainButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="@string/ToTheMain"
+        app:icon="@drawable/ret"
         app:layout_constraintEnd_toStartOf="@+id/CloseButton"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/Objective" />
 
     <Button
-        style="@style/clock_icon"
         android:id="@+id/CloseButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/Close"
-        app:layout_constraintBottom_toBottomOf="@+id/MainButton"
+        app:icon="@drawable/close_icon"
+        app:layout_constraintBottom_toBottomOf="@id/MainButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/MainButton"
-        app:layout_constraintTop_toTopOf="@+id/MainButton" />
+        app:layout_constraintStart_toEndOf="@id/MainButton"
+        app:layout_constraintTop_toTopOf="@id/MainButton" />
 
     <TextView
         android:id="@+id/Contact"
         style="@style/fontPro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="8dp"
         android:text="@string/Contact"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
