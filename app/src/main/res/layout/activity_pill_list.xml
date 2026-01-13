@@ -65,6 +65,7 @@
         tools:listitem="@layout/item_pill" />
 
     <Button
+        style="@style/add_pill_icon"
         android:id="@+id/AddButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -75,6 +76,7 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
+        style="@style/about_icon"
         android:id="@+id/About"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

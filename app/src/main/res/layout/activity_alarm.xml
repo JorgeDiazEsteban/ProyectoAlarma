@@ -33,6 +33,7 @@
         app:tint="#D32F2F" />
 
     <Button
+        style="@style/lens_icon"
         android:id="@+id/btnStopAlarm"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

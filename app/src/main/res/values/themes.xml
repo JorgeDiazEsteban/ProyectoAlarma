@@ -19,4 +19,31 @@
     <style name="lens_icon">
         <item name="icon">@drawable/lens</item>
     </style>
+    <style name="ret_icon">
+        <item name="icon">@drawable/ret</item>
+    </style>
+    <style name="save_icon">
+        <item name="icon">@drawable/save_icon</item>
+    </style>
+    <style name="view_list">
+        <item name="icon">@drawable/view_list</item>
+    </style>
+    <style name="exit_icon">
+        <item name="icon">@drawable/exit</item>
+    </style>
+    <style name="add_pill_icon">
+        <item name="icon">@drawable/add_pill_icon</item>
+    </style>"
+    <style name="clock_icon">
+        <item name="icon">@drawable/clock_icon</item>
+    </style>
+    <style name="delete_icon">
+        <item name="icon">@drawable/delete_icon</item>
+    </style>
+    <style name="about_icon">
+        <item name="icon">@drawable/about</item>
+    </style>
+    <style name="close_icon">
+        <item name="icon">@drawable/close_icon</item>
+    </style>
 </resources>
