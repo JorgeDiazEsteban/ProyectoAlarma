@@ -9,6 +9,7 @@
     tools:context=".Alarm">
 
     <TextView
+        style="@style/fontPro"
         android:id="@+id/tvAlarmTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -50,27 +50,32 @@
 
     <Button
         android:id="@+id/MainButton"
+        style="@style/fontPro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="80dp"
+        android:layout_marginEnd="80dp"
+        android:layout_marginBottom="25dp"
         android:text="@string/ToTheMain"
         app:icon="@drawable/ret"
-        app:layout_constraintEnd_toStartOf="@+id/CloseButton"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/Objective" />
+        app:layout_constraintBottom_toTopOf="@+id/CloseButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.466"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/CloseButton"
+        style="@style/fontPro"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginBottom="68dp"
         android:text="@string/Close"
         app:icon="@drawable/close_icon"
-        app:layout_constraintBottom_toBottomOf="@id/MainButton"
+        app:layout_constraintBottom_toTopOf="@+id/Contact"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@id/MainButton"
-        app:layout_constraintTop_toTopOf="@id/MainButton" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/Contact"

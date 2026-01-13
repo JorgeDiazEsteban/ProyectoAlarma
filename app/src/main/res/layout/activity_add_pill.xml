@@ -33,6 +33,7 @@
         android:inputType="time" />
 
     <Button
+        style="@style/fontPro"
         android:id="@+id/btnAddHour"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -57,6 +58,7 @@
 
         <Button
             android:id="@+id/SaveButton"
+            style="@style/fontPro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/Save"
@@ -64,6 +66,7 @@
             android:layout_margin="10dp" />
 
         <Button
+            style="@style/fontPro"
             android:id="@+id/DeleteButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -76,6 +79,7 @@
     </LinearLayout>
 
     <Button
+        style="@style/fontPro"
         android:id="@+id/PagPrincipal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -84,6 +88,7 @@
         android:layout_marginTop="10dp" />
 
     <Button
+        style="@style/fontPro"
         android:id="@+id/btnScan"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
