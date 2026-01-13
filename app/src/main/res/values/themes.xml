@@ -15,6 +15,10 @@
         <item name="android:textColor">@color/white</item>
         <item name="android:textColorHint">@color/white</item>
     </style>
+    <style name="welcome_font">
+        <item name="android:fontFamily">@font/playfair_display_black_italic</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
 
     <!-- Custom background style -->
     <style name="backgroundPro">
@@ -70,4 +74,5 @@
     <style name="close_icon">
         <item name="icon">@drawable/close_icon</item>
     </style>
+
 </resources>

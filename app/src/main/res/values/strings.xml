@@ -21,4 +21,6 @@
     <string name="AboutUs">Sobre nosotros</string>
     <string name="Name">Nombre</string>
     <string name="TimesDay">X veces al día</string>
+    <string name="welcome">BIENVENIDO</string>
+    <string name="img_splash">Imagen principal para splash screen</string>
 </resources>
