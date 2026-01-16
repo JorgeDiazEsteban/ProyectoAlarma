@@ -95,6 +95,10 @@ class PillList : AppCompatActivity() {
             val intent = Intent(this, AboutUs::class.java)
             startActivity(intent)
         }
+        
+        binding.CloseButton.setOnClickListener {
+            finishAffinity()
+        }
     }
 
     // Guarda la lista en un bundle temporal antes de destruir la actividad (ej: al rotar)
